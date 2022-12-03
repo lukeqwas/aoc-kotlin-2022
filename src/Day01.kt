@@ -1,17 +1,40 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    // 4*O(N) == O(N)
+    // it could be NlogN if the calorie totals were sorted
+    val testInput = readInput("Day01")
+    val totalElfCalories = mutableListOf<Long>()
+    var curCalorie = 0L
+    for (calorie in testInput) {
+        if(calorie.equals("")) {
+            totalElfCalories.add(curCalorie)
+            curCalorie = 0
+        } else {
+            curCalorie += calorie.toLong()
+        }
     }
+    // dont forget the last one
+    totalElfCalories.add(curCalorie)
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
-
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+    val result1 = findMax(totalElfCalories)
+    val result2 = findMax(result1.list)
+    val result3 = findMax(result2.list)
+    println(result1.max + result2.max + result3.max)
 }
+
+fun findMax(elfCalories: MutableList<Long>): RemoveResult {
+    var max = 0L
+    var maxIndex = 0
+    var curIndex = 0
+    for (totalCalorie in elfCalories) {
+        if(totalCalorie > max) {
+            max = totalCalorie
+            maxIndex = curIndex
+        }
+        curIndex++
+    }
+    elfCalories.removeAt(maxIndex)
+    return RemoveResult(max, elfCalories)
+}
+
+data class RemoveResult(val max: Long, val list: MutableList<Long>)
+
