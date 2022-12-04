@@ -1,6 +1,9 @@
+package Day1
+
+import readInput
+
 fun main() {
     // 4*O(N) == O(N)
-    // it could be NlogN if the calorie totals were sorted
     val testInput = readInput("Day01")
     val totalElfCalories = mutableListOf<Long>()
     var curCalorie = 0L
